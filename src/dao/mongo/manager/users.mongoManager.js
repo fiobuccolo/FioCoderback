@@ -43,6 +43,7 @@ export default class UserManager {
             console.log("insert de user manager")
             return await userModel.create(newUser)
         } catch (error) {
+         
             throw error;
         }
       }

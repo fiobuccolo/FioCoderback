@@ -1,4 +1,5 @@
 import {UsersService } from "../services/index.service.js"
+import { createHash, isValidPassword } from "../utils/bcrypt.js";
 import { generateToken } from "../utils/jwt.utils.js";
 
 
@@ -19,32 +20,26 @@ import { generateToken } from "../utils/jwt.utils.js";
         try {
             console.log("get one user")
             const { email, password } = req.body;
-            console.log("controler", email)
-
-            
+            if ( !email || !password)
+                return res.status(400).json({status:"error", message: "Datos incompletos"})
+           
             const user = await UsersService.findUser(email)
             //console.log(product.message)
-            console.log("usuario desde el auth controller:", user)
-            if(!user){
+            //console.log("usuario desde el auth controller:", user)
+            if(!user){ 
                 return res.json({status:"success", message: "User not found", payload:user}) }
             // --- PENDING VALIDACIÖN DE CONTRASEÑA ----
-            
-            // registro de sesión
-            console.log("antes del registro de session")
-            console.log("user email:",  user.email)
-            
-            // sí existe el usuario, Créale una SESIÓN:
-
-            /* ???? PREGUNTA PARA TUTOR:
-                si pongo req.session.user se rompe el proceso y me da error: "error": "Cannot set properties of undefined (setting 'user')""
-                si pongo req.session no rompe, pero no me genera sesión-- no hace nada
-            */ 
-            req.session = {
+            if(!isValidPassword(user,password))
+                return res.status(403).json({status:"error", message: "Datos incorrectos"})
+           delete user.password
+            // registro de sesión:
+        
+                // sí existe el usuario, Créale una SESIÓN:
+            req.session.user = {
                 name: `${user.first_name} ${user.last_name}`,
                 email:user.email
             }
             
-            console.log("dp del registro de session")
             // Generación de token:
                 const token = generateToken(user)
             res.cookie("authToKen",token, {maxAge:300000,httpOnly:true}).json({status:"success", message: "User logged in"})  
@@ -59,15 +54,22 @@ import { generateToken } from "../utils/jwt.utils.js";
     const addUser = async (req,res) =>{ 
         try {
             console.log("add users controller 1")
-            const newUser = req.body
-            const { first_name,last_name,email,role } = req.body
-            if ( !first_name || !last_name || !email )
-             return res.send("Datos incompletos")
+        
+            const { first_name,last_name,email,password, role } = req.body
+            if ( !first_name || !last_name || !email || !password )
+            return res.status(400).json({status:"error", message: "Datos incompletos"})
+            const newUser = {
+                first_name,
+                last_name,
+                email,
+                password: createHash(password),
+                role
+            }
             const user =  await UsersService.insertUser(newUser)
             console.log("add user controller 2 ") 
             return res.status(201).json({status:"success", message: user})
         } catch (error) {
-            res.status(500).json({status:"error del add user", error: error.message, errorcode:error.code})  
+            res.status(500).json({status:"error del add user", message: error.message, ecode: error.code})  
         }
     }
     

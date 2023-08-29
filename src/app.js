@@ -21,6 +21,18 @@ const PORT = config.PORT
 
 const connection = await mongoose.connect(`mongodb+srv://${MongoDB}`)
 
+app.use(
+    session({
+        store: new MongoStore({
+            mongoUrl:`mongodb+srv://${MongoDB}`,
+            ttl: 3600,
+        }),
+        secret:"fioSecret",
+        resave:true,
+        saveUninitialized: true,
+    })
+)
+
 // mongoConnect();
 // router(app);
 
@@ -35,17 +47,6 @@ app.use(passport.initialize())
 
 //app.use(cors())
 
-app.use(
-    session({
-        store: new MongoStore({
-            mongoUrl:`mongodb+srv://${MongoDB}`,
-            ttl: 3600,
-        }),
-        secret:"fioSecret",
-        resave:false,
-        saveUninitialized: true,
-    })
-)
 
  
 

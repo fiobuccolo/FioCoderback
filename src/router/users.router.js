@@ -4,8 +4,8 @@ import authControllers from "../controllers/auth.controllers.js";
 
 const usersRouter = Router();
 
-usersRouter.get("/users", authControllers.getUsers);
-usersRouter.get("/login", authControllers.getUser);
+usersRouter.post("/users", authControllers.getUsers);
+usersRouter.post("/login", authControllers.getUser);
 usersRouter.post("/register", authControllers.addUser); 
 
  
