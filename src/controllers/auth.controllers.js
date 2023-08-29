@@ -9,7 +9,7 @@ import { generateToken } from "../utils/jwt.utils.js";
             console.log("en el controller")
             res.json({status:"success", message: users})  
         } catch (error) {
-            res.status(500).json({status:"error", error: error.message})  
+            res.status(500).json({status:"error get users", error: error.message})  
         }
     }
 
@@ -50,7 +50,7 @@ import { generateToken } from "../utils/jwt.utils.js";
             res.cookie("authToKen",token, {maxAge:300000,httpOnly:true}).json({status:"success", message: "User logged in"})  
            
         } catch (error) {
-        res.status(500).json({status:"error", error: error.message})  
+        res.status(500).json({status:"error del get User", message: error.message})  
         }
     
     }
@@ -62,15 +62,15 @@ import { generateToken } from "../utils/jwt.utils.js";
             const newUser = req.body
             const { first_name,last_name,email,role } = req.body
             if ( !first_name || !last_name || !email )
-            return res.send("Datos incompletos")
-            user =  await UsersService.insertUser(newUser)
+             return res.send("Datos incompletos")
+            const user =  await UsersService.insertUser(newUser)
             console.log("add user controller 2 ") 
-            return res.status(201).json({status:"success", message:user})
+            return res.status(201).json({status:"success", message: user})
         } catch (error) {
-            res.status(500).json({status:"error", error: error.message, errorcode:error.code})  
+            res.status(500).json({status:"error del add user", error: error.message, errorcode:error.code})  
         }
     }
-
+    
    
 
     const deleteUser = async (req,res) =>{ 

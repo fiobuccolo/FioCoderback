@@ -2,10 +2,10 @@ import userModel from "../models/users.models.js"
 
 
 export default class UserManager {
-    // static #instance
-    // constructor() {
-    //     ProductManager.#instance = this;
-    // }
+     static #instance
+     constructor() {
+         UserManager.#instance = this;
+     }
 
     async getUsersManager (){  
         try {
@@ -40,7 +40,8 @@ export default class UserManager {
     
     async insert(newUser){
         try {
-            return userModel.create(newUser)
+            console.log("insert de user manager")
+            return await userModel.create(newUser)
         } catch (error) {
             throw error;
         }

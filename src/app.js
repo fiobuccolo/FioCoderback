@@ -30,6 +30,8 @@ app.use(express.urlencoded({extended:true}));
 app.use(morgan("dev"))
 app.use("/api",router)
 app.use(cookieParser())
+initializePassport()
+app.use(passport.initialize())
 
 //app.use(cors())
 
@@ -44,8 +46,7 @@ app.use(
         saveUninitialized: true,
     })
 )
-initializePassport()
- app.use(passport.initialize())
+
  
 
 app.listen(PORT,() =>{
