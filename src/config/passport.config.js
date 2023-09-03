@@ -12,8 +12,9 @@ const initializePassport = () =>{
         jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
         // tomarle de variable de entorno dp 
         secretOrKey: "fioSecret"
-    },async(jwt_payload,done)=>{
+    }, async (jwt_payload,done)=>{
         try {
+            console.log("jwt payload", jwt_payload)
             done(null,jwt_payload)
         } catch (error) {
             done(error)

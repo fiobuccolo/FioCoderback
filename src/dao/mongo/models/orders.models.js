@@ -1,10 +1,3 @@
-// Pendiente ver como autogenero el code-- era ++1
-//   
-//        
-//         # - purchase_Datetime: fecha y hora exacta en la que se formaliza la compra
-
-
-
 
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2"

@@ -19,13 +19,11 @@ import { generateToken } from "../utils/jwt.utils.js";
     const getUser = async (req,res) =>{ 
         try {
             console.log("get one user")
-            const { email, password } = req.body;
+            const { email, password, role } = req.body;
             if ( !email || !password)
-                return res.status(400).json({status:"error", message: "Datos incompletos"})
-           
+                return res.status(400).json({status:"error", message: "Datos incompletos"})  
             const user = await UsersService.findUser(email)
-            //console.log(product.message)
-            //console.log("usuario desde el auth controller:", user)
+            console.log(user)
             if(!user){ 
                 return res.json({status:"success", message: "User not found", payload:user}) }
             // --- PENDING VALIDACIÖN DE CONTRASEÑA ----
@@ -33,13 +31,12 @@ import { generateToken } from "../utils/jwt.utils.js";
                 return res.status(403).json({status:"error", message: "Datos incorrectos"})
            delete user.password
             // registro de sesión:
-        
                 // sí existe el usuario, Créale una SESIÓN:
             req.session.user = {
                 name: `${user.first_name} ${user.last_name}`,
-                email:user.email
+                email:user.email,
+                role: user.role
             }
-            
             // Generación de token:
                 const token = generateToken(user)
             res.cookie("authToKen",token, {maxAge:300000,httpOnly:true}).json({status:"success", message: "User logged in"})  
@@ -54,10 +51,12 @@ import { generateToken } from "../utils/jwt.utils.js";
     const addUser = async (req,res) =>{ 
         try {
             console.log("add users controller 1")
-        
             const { first_name,last_name,email,password, role } = req.body
             if ( !first_name || !last_name || !email || !password )
             return res.status(400).json({status:"error", message: "Datos incompletos"})
+            //--- PEnding: validación de cliente existente
+                // const exist = users.find((user)=> user.email === email)
+                // if(exist){ return res.status(400).json({status:"error", message: "El usuario ya existe"})}
             const newUser = {
                 first_name,
                 last_name,

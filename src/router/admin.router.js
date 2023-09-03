@@ -18,3 +18,6 @@ const adminRouter = Router();
 // >> log in le asigno un token >> en el authorization valido el role 
 
 export default adminRouter  
+
+
+
