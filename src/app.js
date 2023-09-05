@@ -61,6 +61,12 @@ app.use(passport.initialize())
 //app.use(cors())
  
 
+
+/// ---- TESTING-----
+
+import productsTestingRouter from "./test/products.js"
+app.use("/api/mockingproducts",productsTestingRouter)
+
 app.listen(PORT,() =>{
     console.log(`Server is running in port ${PORT}`)
 })

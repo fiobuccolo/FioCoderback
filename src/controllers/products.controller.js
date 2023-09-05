@@ -16,7 +16,7 @@ import { ProductsService } from "../services/index.service.js"
         try {
             let { limit = 4, page = 1, filter = null, sort = null } = req.query  
             const { docs,hasPrevPage, hasNextPage, prevPage, nextPage, ...rest} =
-            await ProductsService.paginateProducts(limit,page,filter,sort) // tengo que hacer un paginate
+            await ProductsService.paginateProducts(limit,page,filter,sort)
             console.log("en el controller")
             const prods = docs
             console.log(prods,hasPrevPage,
