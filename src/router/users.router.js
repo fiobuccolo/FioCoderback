@@ -2,6 +2,7 @@ import { Router } from "express";
 import authControllers from "../controllers/auth.controllers.js";
 import { authToken } from "../utils/jwt.utils.js";
 
+
 const usersRouter = Router();
 
 usersRouter.get("/users", authToken, authControllers.getUsers);

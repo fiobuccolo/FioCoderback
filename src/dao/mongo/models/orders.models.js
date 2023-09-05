@@ -32,7 +32,6 @@ timestamps: {
 }
 );
 
-
 collectionSchema.pre("find", function () {
     this.populate("products").populate("user");
   });

@@ -15,6 +15,19 @@ export default class ProductManager {
         }
     }   
 
+    async paginateProducts(limit,page, filter,sort){ 
+      try {
+        console.log(limit,page, filter,sort)
+         const producs = await productModel.paginate(filter,{page, limit, sort, lean:true}); 
+        console.log(`desde el managerproducs`)
+        console.log(producs)
+         return producs
+      } catch (error) {
+        return error
+      }
+      
+      }
+
     async getProductoByCode(code){
        const product = await productModel.findOne({code: code});
        if(!product) {

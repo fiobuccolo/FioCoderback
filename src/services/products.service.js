@@ -10,6 +10,10 @@ export default class ProductService{
         return this.dao.getProductsManager()
     };
 
+    paginateProducts =(limit,page, filter,sort)=>{
+        return this.dao.paginateProducts(limit,page, filter,sort)
+    }
+
     getProduct = (id) => {
         console.log("get producto service")
         console.log("service", id)

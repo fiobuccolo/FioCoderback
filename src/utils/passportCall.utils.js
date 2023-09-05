@@ -7,7 +7,8 @@ const passportCall = (strategy) =>{
             if(err) return next(err)
             if(!user) {
                 console.log("no hay user")
-                return res.status(401).json({error: info.messages?info.messages:info.toString()});
+                return res.status(401)
+                .json({error: info.messages?info.messages:info.toString()});
             }
         req.user = user;
         console.log(req.user)

@@ -10,6 +10,36 @@ import { ProductsService } from "../services/index.service.js"
         }
     }
 
+// ------
+
+    const viewsGetProducts = async (req,res) =>{ 
+        try {
+            let { limit = 4, page = 1, filter = null, sort = null } = req.query  
+            const { docs,hasPrevPage, hasNextPage, prevPage, nextPage, ...rest} =
+            await ProductsService.paginateProducts(limit,page,filter,sort) // tengo que hacer un paginate
+            console.log("en el controller")
+            const prods = docs
+            console.log(prods,hasPrevPage,
+            hasNextPage,
+            prevPage,
+            nextPage)
+            res.render('products',{
+                prods,
+                page:rest.page,
+                hasPrevPage,
+                hasNextPage,
+                prevPage,
+                nextPage
+            })
+        
+        } catch (error) {
+            res.status(500).json({status:"error", error: error.message})  
+        }
+    }
+
+//-----
+
+
     const getProduct = async (req,res) =>{ 
         try {
             console.log("get one product")
@@ -71,6 +101,7 @@ import { ProductsService } from "../services/index.service.js"
 
 export default {    
     getProducts,
+    viewsGetProducts,
     getProduct, 
     addProduct,
     updateProduct,
