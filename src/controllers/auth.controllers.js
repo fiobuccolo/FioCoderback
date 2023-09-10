@@ -19,7 +19,8 @@ import { generateToken } from "../utils/jwt.utils.js";
     const getUser = async (req,res) =>{ 
         try {
             req.logger.info("Prueba de logger nivel info")
-            req.logger.warning("Prueba de logger,get one user")
+            req.logger.debug("Prueba de logger nivel debug")
+            req.logger.error("Prueba de logger nivel error")
             console.log("get one user")
             const { email, password, role } = req.body;
             if ( !email || !password)

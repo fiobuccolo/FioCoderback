@@ -72,6 +72,14 @@ app.use(passport.initialize())
 import productsTestingRouter from "../test/products.js"
 app.use("/api/mockingproducts",productsTestingRouter)
 
+import artilleryRouter from "../test/artillery/artillery.js"
+app.use("/api",artilleryRouter)
+
+import logsRouter from "../test/logger/logs.js"
+
+app.use("/api",logsRouter)
+
+
 app.listen(PORT,() =>{
     console.log(`Server is running in port ${PORT}`)
 })
