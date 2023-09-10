@@ -18,12 +18,15 @@ import initializePassport from "./config/passport.config.js";
 import viewsRouter from "./router/views.router.js";
 //import mongoConnect from "../db/index.js";
 
+import { addLogger } from "./utils/logger.js";
+
 const app = express();
 const MongoDB = config.MONGODB_URL
 const PORT = config.PORT
 
 const connection = await mongoose.connect(`mongodb+srv://${MongoDB}`)
 
+app.use(addLogger); 
 
 // handlebars
 app.engine('handlebars',handlebars.engine());
@@ -31,7 +34,7 @@ app.set("views",_dirname + "/views")
 app.set("view engine","handlebars")
 //app.use(express.static(_dirname+ "/public"))
 
-
+// SESSION:  ---
 app.use(
     session({
         store: new MongoStore({
@@ -44,12 +47,14 @@ app.use(
     })
 )
 
-// mongoConnect();
-// router(app);
+
 
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+
+
+
 app.use(morgan("dev"))
 app.use("/api",router)
 app.use("/",viewsRouter)
@@ -59,12 +64,12 @@ initializePassport()
 app.use(passport.initialize())
 
 //app.use(cors())
- 
+
 
 
 /// ---- TESTING-----
 
-import productsTestingRouter from "./test/products.js"
+import productsTestingRouter from "../test/products.js"
 app.use("/api/mockingproducts",productsTestingRouter)
 
 app.listen(PORT,() =>{
