@@ -1,6 +1,9 @@
 import {UsersService } from "../services/index.service.js"
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
 import { generateToken } from "../utils/jwt.utils.js";
+import CustomErrors from "../utils/errors/customErrors.utils.js";
+import generateUserErrorInfo from "../utils/errors/infoErrors.utils.js";
+import EnumErrors from "../utils/errors/enumErrors.utils.js";
 
 
     // get users
@@ -52,11 +55,21 @@ import { generateToken } from "../utils/jwt.utils.js";
     
     // REGISTER
     const addUser = async (req,res) =>{ 
-        try {
+     //   try {
             console.log("add users controller 1")
             const { first_name,last_name,email,password, role } = req.body
-            if ( !first_name || !last_name || !email || !password )
-            return res.status(400).json({status:"error", message: "Datos incompletos"})
+            if ( !first_name || !last_name || !email || !password ){
+               //  return res.status(400).json({status:"error", message: "Datos incompletos"})
+               
+                CustomErrors.createError({
+                  name: "User creation error",
+                  cause: generateUserErrorInfo({ first_name, last_name, email }),
+                  message: "Error trying to create user",
+                  code: EnumErrors.INVALID_TYPES_ERROR,
+                });
+              }
+
+            
             //--- PEnding: validación de cliente existente
                 // const exist = users.find((user)=> user.email === email)
                 // if(exist){ return res.status(400).json({status:"error", message: "El usuario ya existe"})}
@@ -70,9 +83,9 @@ import { generateToken } from "../utils/jwt.utils.js";
             const user =  await UsersService.insertUser(newUser)
             console.log("add user controller 2 ") 
             return res.status(201).json({status:"success", message: user})
-        } catch (error) {
-            res.status(500).json({status:"error del add user", message: error.message, ecode: error.code})  
-        }
+    //    } catch (error) {
+    //         res.status(500).json({status:"error del add user", message: error.message, ecode: error.code})  
+    //    }
     }
     
    

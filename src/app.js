@@ -19,6 +19,7 @@ import viewsRouter from "./router/views.router.js";
 //import mongoConnect from "../db/index.js";
 
 import { addLogger } from "./utils/logger.js";
+import errorsMiddleware from "./middleware/errors.middleware.js";
 
 const app = express();
 const MongoDB = config.MONGODB_URL
@@ -28,6 +29,7 @@ const connection = await mongoose.connect(`mongodb+srv://${MongoDB}`)
 
 app.use(addLogger); 
 
+app.use(errorsMiddleware);
 // handlebars
 app.engine('handlebars',handlebars.engine());
 app.set("views",_dirname + "/views")
@@ -76,7 +78,6 @@ import artilleryRouter from "../test/artillery/artillery.js"
 app.use("/api",artilleryRouter)
 
 import logsRouter from "../test/logger/logs.js"
-
 app.use("/api",logsRouter)
 
 
