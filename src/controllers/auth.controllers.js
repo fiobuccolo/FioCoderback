@@ -1,7 +1,7 @@
 import {UsersService } from "../services/index.service.js"
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
 import { generateToken } from "../utils/jwt.utils.js";
-import CustomErrors from "../utils/errors/customErrors.utils.js";
+import CustomErrors from "../utils/errors/custom.errors.js";
 import generateUserErrorInfo from "../utils/errors/infoErrors.utils.js";
 import EnumErrors from "../utils/errors/enumErrors.utils.js";
 

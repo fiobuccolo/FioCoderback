@@ -19,7 +19,7 @@ import viewsRouter from "./router/views.router.js";
 //import mongoConnect from "../db/index.js";
 
 import { addLogger } from "./utils/logger.js";
-import errorsMiddleware from "./middleware/errors.middleware.js";
+import errors from "./middleware/errors/index.js";
 
 const app = express();
 const MongoDB = config.MONGODB_URL
@@ -29,7 +29,7 @@ const connection = await mongoose.connect(`mongodb+srv://${MongoDB}`)
 
 app.use(addLogger); 
 
-app.use(errorsMiddleware);
+app.use(errors);
 // handlebars
 app.engine('handlebars',handlebars.engine());
 app.set("views",_dirname + "/views")
@@ -84,3 +84,5 @@ app.use("/api",logsRouter)
 app.listen(PORT,() =>{
     console.log(`Server is running in port ${PORT}`)
 })
+
+
