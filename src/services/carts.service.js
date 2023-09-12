@@ -23,4 +23,18 @@ export default class CartService{
         return this.dao.create(newCart)
     }
 
+    addProductToCart = (cid,product) => {
+        console.log("addProductToCart service")
+        console.log(cid, product)
+        //return this.dao.getProxductoById(id)
+        return this.dao.addProductToCart(cid,product)
+    }
+
+    updateCart = (cid,product) => {
+        console.log("updateCart service")
+        console.log(cid, product)
+        //return this.dao.getProxductoById(id)
+        return this.dao.updateCart(cid,product)
+    }
+
 }

@@ -1,5 +1,6 @@
 import { ProductsService } from "../services/index.service.js"
 import { CartsService } from "../services/index.service.js";
+
     const getCarts = async (req,res) =>{ 
         try {
             const carts = await  CartsService.getAllCarts();
@@ -43,20 +44,50 @@ import { CartsService } from "../services/index.service.js";
             const { pid , cid } = req.params;
         // VALIDACIONES PENDING:
             // 1. Existe el CID?
+             const cart1 = await  CartsService.getCart(cid)
+             console.log(cart1)
                 // No: MSJ DE ERROr 
+                if(!cart1){
+                    return res.json({status:"success", message: "Cart not found"}) }
                 // SI: Next
                     //Existe el producto:
+                    const product = await ProductsService.getProduct(pid)
+                    //console.log(product)
                         //NO: MSJ DE ERROR
+                        if(!product){
+                            return res.json({status:"success", message: "Product not found"}) }
                         //SI: next
                             // Existe el producto en el carrito:
-                                // NO: AGregarleo
+                            console.log(cart1.products[1])
+                            const productInCart = cart1.products.find(p => p.id === pid);
+                            console.log("product in cart", productInCart)
                                 // SI: Sumarle una cantidad
-
-
-
-            // const quantity = req.body
-            const cart = await  CartsService.XXXcart(cid,pid)
-            return res.status(201).json({status:"success", message:cart})
+                                if(productInCart){
+                                    
+                                    // const newQuantity = productInCart.quantity += 1;
+                                     const newProduct = {
+                                           id: pid, 
+                                            quantity: productInCart.quantity += 1
+                                     } 
+                                     const cartUpdated = await CartsService.updateCart(cid,newProduct)
+                                     return res.status(201).json({status:"success", message:cartUpdated})
+                                }
+                                // NO: AGregarleo
+                                 else{
+                                    console.log("No entro por indice producto")
+                                   const value = 1                         
+                                       //console.log(cid,pid,value)
+                                       const newProduct = {
+                                             id: pid,
+                                          quantity: 1
+                                         } 
+                                         const cartUpdated = await CartsService.addProductToCart(cid,newProduct)
+                                         return res.status(201).json({status:"success", message:cartUpdated})
+                                    }
+                                       
+                                 
+                                    console.log(cartUpdated)
+                     return res.status(201).json({status:"success", message:cartUpdated})
         } catch (error) {
             res.status(500).json({status:"error", error: error.message, errorcode:error.code})  
         }
@@ -66,7 +97,8 @@ import { CartsService } from "../services/index.service.js";
 export default {    
     getCarts,
     getCart,
-    addCart
+    addCart,
+    addProductToCart
 }
 
 

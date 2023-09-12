@@ -6,6 +6,7 @@ const cartsRouter = Router();
 cartsRouter.get("/", cartsController.getCarts)
 cartsRouter.get("/:id", cartsController.getCart)
 cartsRouter.post("/", cartsController.addCart); 
+cartsRouter.post('/:cid/product/:pid', cartsController.addProductToCart)
 
 // --- PENDING:
 

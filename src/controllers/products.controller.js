@@ -85,6 +85,9 @@ import { ProductsService } from "../services/index.service.js"
         res.status(500).json({status:"error", error: error.message, errorcode:error.code})  
     }
     }
+   
+
+
 
     const deleteProduct = async (req,res) =>{ 
         try {
