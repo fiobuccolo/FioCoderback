@@ -51,10 +51,11 @@ export default class CartManager {
         console.log("updateCart manager")
         console.log("product quantity", product.quantity)
         console.log("product id", product.id)
-        const data =  await cartModel.findOne(
-          {_id: cid, "products._id": product.id},
-        // { $set:{ 'products.quantity': product.quantity}},
-            )
+        const data = await cartModel.updateOne({ _id: cid }, { $set:{products:product}});
+        // const data =  await cartModel.findOne(
+        //   {_id: cid, "products._id": product.id},
+        // // { $set:{ 'products.quantity': product.quantity}},
+        //     )
         console.log(data)
         return data
       } catch (error) {
