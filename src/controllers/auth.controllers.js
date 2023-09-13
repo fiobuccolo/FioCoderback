@@ -67,9 +67,7 @@ import EnumErrors from "../utils/errors/enumErrors.utils.js";
                   message: "Error trying to create user",
                   code: EnumErrors.INVALID_TYPES_ERROR,
                 });
-              }
-
-            
+              }  
             //--- PEnding: validación de cliente existente
                 // const exist = users.find((user)=> user.email === email)
                 // if(exist){ return res.status(400).json({status:"error", message: "El usuario ya existe"})}

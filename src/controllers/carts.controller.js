@@ -58,30 +58,23 @@ import { CartsService } from "../services/index.service.js";
                             return res.json({status:"success", message: "Product not found"}) }
                         //SI: next
                             // Existe el producto en el carrito:
-                            console.log(cart1.products[1])
                             const productInCart = cart1.products.find(p => p.id === pid);
-                            console.log("product in cart", productInCart)
+                            const index = cart1.products.findIndex(p => p.id === pid);
                                 // SI: Sumarle una cantidad
                                 if(productInCart){
                                     
-                                    // const newQuantity = productInCart.quantity += 1;
-                                     const newProduct = {
-                                           id: pid, 
-                                            quantity: productInCart.quantity += 1
-                                     } 
-                                     const cartUpdated = await CartsService.updateCart(cid,newProduct)
+
+                                     const cartUpdated = await CartsService.updateCart(cid,pid)
                                      return res.status(201).json({status:"success", message:cartUpdated})
                                 }
                                 // NO: AGregarleo
                                  else{
-                                    console.log("No entro por indice producto")
-                                   const value = 1                         
-                                       //console.log(cid,pid,value)
-                                       const newProduct = {
-                                             id: pid,
-                                          quantity: 1
-                                         } 
-                                         const cartUpdated = await CartsService.addProductToCart(cid,newProduct)
+                                    console.log("No entro por indice producto")                       
+                                    
+                                    const create = {
+                                        $push: { products: { _id: pid, quantity: 1 } },
+                                    }
+                                         const cartUpdated = await CartsService.addProductToCart(cid,create)
                                          return res.status(201).json({status:"success", message:cartUpdated})
                                     }
                                        

@@ -36,27 +36,29 @@ export default class CartManager {
       // -- PENDING: Agregarle  y eliminarle products a UN CART  
 
       // agregar un producto al cart
-    async addProductToCart (cid,product) {
+    async addProductToCart (cid,create) {
         try {
-          console.log("addProductToCart manager")
-          console.log(cid,product)
-          return await cartModel.updateOne({ _id: cid }, { $push:{products:product}});
+
+          
+          return await cartModel.findByIdAndUpdate({ _id: cid }, create);
         } catch (error) {
           throw error;
         }
      }
+
+
+     
 // actualizar cantidad en un producto que ya esta en el cart
-     async updateCart (cid,product) {
+     async updateCart (cid,pid) {
       try {
-        console.log("updateCart manager")
-        console.log("product quantity", product.quantity)
-        console.log("product id", product.id)
-        const data = await cartModel.updateOne({ _id: cid }, { $set:{products:product}});
-        // const data =  await cartModel.findOne(
-        //   {_id: cid, "products._id": product.id},
-        // // { $set:{ 'products.quantity': product.quantity}},
-        //     )
-        console.log(data)
+      
+        const data = await cartModel.findByIdAndUpdate(
+          { _id: cid },
+          { $inc: { 'products.$[elem].quantity': 1 } },
+          { arrayFilters: [{ 'elem._id': pid }] }
+          )
+  
+        console.log("data:", data)
         return data
       } catch (error) {
         throw error;
